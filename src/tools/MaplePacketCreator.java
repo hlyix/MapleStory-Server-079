@@ -3396,7 +3396,11 @@ public class MaplePacketCreator
         }
         mplew.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
         mplew.write(4);
-        mplew.writeInt(from.getParty().getId());
+        if (from.getParty() != null) {
+            mplew.writeInt(from.getParty().getId());
+        } else {
+            mplew.writeInt(0);
+        }
         mplew.writeMapleAsciiString(from.getName());
         mplew.write(0);
         if (ServerConstants.PACKET_ERROR_OFF) {

@@ -65,7 +65,7 @@ public class MapleAESOFB
 
     public MapleAESOFB(byte[] iv, short mapleVersion) {
         try {
-            this.cipher = Cipher.getInstance("AES");
+            this.cipher = Cipher.getInstance("AES/ECB/NoPadding");
             this.cipher.init(1, skey);
         } catch (NoSuchAlgorithmException|javax.crypto.NoSuchPaddingException e) {
             System.err.println("ERROR" + e);

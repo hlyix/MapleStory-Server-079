@@ -29,10 +29,11 @@ public class PartyHandler
                         break;
                     }
                     case 22: {
-                        final MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterById(party.getLeader().getId());
-                        if (cfrom != null) {
-                            cfrom.getClient().getSession().write(MaplePacketCreator.partyStatusMessage(23, c.getPlayer().getName()));
-                            break;
+                        if (c.getChannelServer() != null) {
+                            final MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterById(party.getLeader().getId());
+                            if (cfrom != null) {
+                                cfrom.getClient().getSession().write(MaplePacketCreator.partyStatusMessage(23, c.getPlayer().getName()));
+                            }
                         }
                         break;
                     }
@@ -112,6 +113,9 @@ public class PartyHandler
                 break;
             }
             case 4: {
+                if (c.getChannelServer() == null) {
+                    break;
+                }
                 final MapleCharacter invited = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
                 if (invited == null) {
                     c.getSession().write(MaplePacketCreator.partyStatusMessage(18));
