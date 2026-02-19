@@ -60,16 +60,16 @@ service mysql status
 
 ### 1. 设置root密码
 
-默认情况下，MySQL root用户没有密码。需要设置密码为 `afauria`（与项目配置文件一致）：
+默认情况下，MySQL root用户没有密码。需要设置密码为 `root`（与项目配置文件一致）：
 
 ```bash
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'afauria'; FLUSH PRIVILEGES;"
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root'; FLUSH PRIVILEGES;"
 ```
 
 ### 2. 创建游戏数据库
 
 ```bash
-mysql -uroot -pafauria -e "CREATE DATABASE IF NOT EXISTS maplestory_079 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS maplestory_079 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 ```
 
 **数据库配置说明：**
@@ -94,7 +94,7 @@ ls -lh ms_20210813_234816.sql
 ### 2. 导入SQL数据
 
 ```bash
-mysql -uroot -pafauria maplestory_079 < ms_20210813_234816.sql
+mysql -uroot -proot maplestory_079 < ms_20210813_234816.sql
 ```
 
 导入过程可能需要10-30秒，请耐心等待。
@@ -106,7 +106,7 @@ mysql -uroot -pafauria maplestory_079 < ms_20210813_234816.sql
 ### 1. 查看数据表数量
 
 ```bash
-mysql -uroot -pafauria maplestory_079 -e "SHOW TABLES;"
+mysql -uroot -proot maplestory_079 -e "SHOW TABLES;"
 ```
 
 应该显示 **116张数据表**。
@@ -114,7 +114,7 @@ mysql -uroot -pafauria maplestory_079 -e "SHOW TABLES;"
 ### 2. 检查重要数据表
 
 ```bash
-mysql -uroot -pafauria maplestory_079 -e "
+mysql -uroot -proot maplestory_079 -e "
 SELECT COUNT(*) as table_count FROM information_schema.tables WHERE table_schema = 'maplestory_079';
 SELECT 'Accounts:', COUNT(*) FROM accounts;
 SELECT 'Characters:', COUNT(*) FROM characters;
@@ -158,7 +158,7 @@ url = jdbc:mysql://127.0.0.1:3306/maplestory_079?autoReconnect=true&characterEnc
 
 # 数据库账号
 username = root
-password = afauria
+password = root
 
 # 连接超时时间（毫秒）
 timeout = 300000
@@ -194,19 +194,19 @@ service mysql status
 
 ```bash
 # 登录MySQL
-mysql -uroot -pafauria
+mysql -uroot -proot
 
 # 登录并选择数据库
-mysql -uroot -pafauria maplestory_079
+mysql -uroot -proot maplestory_079
 
 # 执行SQL文件
-mysql -uroot -pafauria 数据库名 < 文件名.sql
+mysql -uroot -proot 数据库名 < 文件名.sql
 
 # 导出数据库
-mysqldump -uroot -pafauria maplestory_079 > backup.sql
+mysqldump -uroot -proot maplestory_079 > backup.sql
 
 # 导出数据库结构（不包含数据）
-mysqldump -uroot -pafauria --no-data maplestory_079 > structure.sql
+mysqldump -uroot -proot --no-data maplestory_079 > structure.sql
 ```
 
 ### 常用SQL命令
@@ -264,7 +264,7 @@ service mysql restart
 # 重置root密码
 service mysql stop
 mysqld_safe --skip-grant-tables &
-mysql -e "FLUSH PRIVILEGES; ALTER USER 'root'@'localhost' IDENTIFIED BY 'afauria';"
+mysql -e "FLUSH PRIVILEGES; ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
 service mysql restart
 ```
 
@@ -275,10 +275,10 @@ service mysql restart
 **解决方法：**
 ```bash
 # 检查数据库字符集
-mysql -uroot -pafauria -e "SHOW VARIABLES LIKE 'character%';"
+mysql -uroot -proot -e "SHOW VARIABLES LIKE 'character%';"
 
 # 修改数据库字符集
-mysql -uroot -pafauria -e "
+mysql -uroot -proot -e "
 ALTER DATABASE maplestory_079 CHARACTER SET utf8 COLLATE utf8_general_ci;
 "
 ```
@@ -296,7 +296,7 @@ file ms_20210813_234816.sql
 iconv -f GBK -t UTF-8 ms_20210813_234816.sql > ms_utf8.sql
 
 # 使用转换后的文件导入
-mysql -uroot -pafauria maplestory_079 < ms_utf8.sql
+mysql -uroot -proot maplestory_079 < ms_utf8.sql
 ```
 
 ### 5. 连接超时
@@ -342,7 +342,7 @@ service mysql restart
 mkdir -p /backup/mysql
 
 # 备份数据库（带时间戳）
-mysqldump -uroot -pafauria maplestory_079 > /backup/mysql/maplestory_079_$(date +%Y%m%d_%H%M%S).sql
+mysqldump -uroot -proot maplestory_079 > /backup/mysql/maplestory_079_$(date +%Y%m%d_%H%M%S).sql
 
 # 压缩备份文件
 gzip /backup/mysql/maplestory_079_$(date +%Y%m%d_%H%M%S).sql
@@ -362,7 +362,7 @@ BACKUP_FILE="$BACKUP_DIR/maplestory_079_$DATE.sql"
 mkdir -p $BACKUP_DIR
 
 # 备份数据库
-mysqldump -uroot -pafauria maplestory_079 > $BACKUP_FILE
+mysqldump -uroot -proot maplestory_079 > $BACKUP_FILE
 
 # 压缩备份
 gzip $BACKUP_FILE
