@@ -2,3 +2,16 @@
 .dist/
 out/
 .idea/
+
+# 编译输出
+build/
+
+# 日志文件
+logs/
+*.log
+*.rtf
+
+# 临时文件
+*.tmp
+*.pid
+nohup.out
